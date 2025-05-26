@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: auto;
+    }
+
+    .background {
+      height: 200vh; /* Makes the background scrollable */
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      z-index: -1;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .form-wrapper {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    .box {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      width: 340px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .box h2 {
+      color: #4b0082;
+      margin-bottom: 1.2rem;
+    }
+
+    .box input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.6rem 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+      transition: border 0.2s;
+    }
+
+    .box input:focus {
+      border: 1px solid #667eea;
+    }
+
+    .box button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #667eea;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      transition: background 0.3s ease;
+    }
+
+    .box button:hover {
+      background: #5a67d8;
+    }
+
+    .box p {
+      margin-top: 1rem;
+      font-size: 14px;
+    }
+
+    .box a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .box a:hover {
+      text-decoration: underline;
+    }
+
+    ul {
+      padding-left: 20px;
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background"></div>
+
+  <div class="form-wrapper">
+    <div class="box">
+      <h2>✨ Create Account</h2>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="/register">
+        <input type="text" name="username" placeholder="👤 Username" required>
+        <input type="password" name="password" placeholder="🔒 Password" required>
+        <input type="password" name="confirm_password" placeholder="🔁 Confirm Password" required>
+        <button type="submit">📝 Register</button>
+      </form>
+
+      <p><b><i>Already have an account?</i></b><a href="{{ url_for('login_page') }}"> Login</a>
+
+    </div>
+  </div>
+
+</body>
+</html>

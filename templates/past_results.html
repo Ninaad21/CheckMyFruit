@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Past Results</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: Arial, sans-serif;
+      height: 100%;
+      background: url("{{ url_for('static', filename='blue-background-7470781_1280.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: -1;
+    }
+
+    .navbar {
+      background-color: rgba(9, 27, 44, 0.9);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .container {
+      padding: 30px;
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+      color: #333;
+    }
+
+    .card-content h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .label.fresh {
+      color: green;
+      font-weight: bold;
+    }
+
+    .label.stale {
+      color: red;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #2980b9;
+    }
+
+    .clear-history-btn {
+      background-color: #d72a17;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background 0.3s ease;
+    }
+
+    .clear-history-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .flash-message {
+      background-color: #2ecc71;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .meter-wrapper {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 12px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+}
+
+    .meter-bar {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.4s ease-in-out;
+}
+
+    @media (max-width: 600px) {
+      .card img {
+        height: 150px;
+      }
+
+      .navbar h1 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <h1>🍇<i>Past Fruit Detection Results</i> </h1>
+    <a href="{{ url_for('index') }}" class="back-btn">⬅ Back to Home</a>
+  </div>
+
+  <div class="container">
+
+    <!-- Flash message -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-message">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Clear History Form -->
+    <form action="{{ url_for('clear_history') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear all history?');">
+      <button type="submit" class="clear-history-btn">🗑️ Clear All History</button>
+    </form>
+
+    <!-- Past results grid -->
+    <div class="grid">
+      {% for result in results %}
+      <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' ~ result.filename) }}" alt="Fruit image">
+        <div class="card-content">
+          <h3 class="label {{ result.prediction|lower }}">{{ result.prediction }}</h3>
+           {% if result.confidence %}
+        <p>Confidence: {{ result.confidence }}%</p>
+
+        {% if result.confidence >= 70 %}
+          {% set bar_color = '#4CAF50' %}
+        {% elif result.confidence >= 40 %}
+          {% set bar_color = '#FFA500' %}
+        {% else %}
+          {% set bar_color = '#FF4C4C' %}
+        {% endif %}
+
+        <div class="meter-wrapper">
+          <div class="meter-bar" style="width: {{ result.confidence }}%; background-color: {{ bar_color }};"></div>
+        </div>
+      {% else %}
+        <p>Confidence: Not available</p>
+      {% endif %}
+          <p>Date: {% if result.timestamp %}{{ result.timestamp.strftime('%Y-%m-%d %H:%M') }}{% else %}No date available{% endif %}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome - Stale Fruit Detection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .hero {
+      background: url("{{ url_for('static', filename='apple-1769553_1280.jpg') }}") no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      backdrop-filter: blur(2px);
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .content h1 {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .content h1:hover {
+      color: #ffeb3b;
+      text-shadow: 0 0 15px #ffeb3b;
+    }
+
+    .content h1 span {
+      color: yellow;
+    }
+
+    .content p {
+      font-size: 20px;
+      margin-bottom: 30px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .content p:hover {
+      color: #f9f9f9;
+      text-shadow: 0 0 10px #f9f9f9;
+    }
+
+    .btn {
+      padding: 14px 35px;
+      font-size: 18px;
+      color: #d9006e;
+      background-color: #fff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      background-color: #d9006e;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(217, 0, 110, 0.6);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .content h1 {
+        font-size: 32px;
+      }
+
+      .content p {
+        font-size: 16px;
+      }
+
+      .btn {
+        font-size: 16px;
+        padding: 10px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="overlay"></div>
+    <div class="content">
+      <h1>Welcome to <span>Stale Fruit Detection</span></h1>
+      <p>Start identifying stale fruits easily and effectively.</p>
+      <a href="{{ url_for('login_page') }}" class="btn">Login / Register</a>
+    </div>
+  </div>
+</body>
+</html>

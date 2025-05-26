@@ -1,0 +1,62 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Prediction</title>
+</head>
+<body>
+    <h1>Fruit Freshness Prediction</h1>
+    <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Submit</button>
+    </form>
+    
+
+    {% if result %}
+        <h3>Prediction: The fruit is {{ result }}</h3>
+    {% endif %}
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Past Results</title>
+    <style>
+        .result-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            width: 250px;
+            text-align: center;
+        }
+        .result-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Past Detection Results</h2>
+    <div class="results-container">
+        {% for result in results %}
+            <div class="result-card">
+                <img src="{{ url_for('static', filename='uploads/' ~ result.image_filename) }}" alt="Fruit image" class="result-image">
+                <p><strong>Prediction:</strong> {{ result.prediction }}</p>
+                <p><strong>Date:</strong> {{ result.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
