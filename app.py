@@ -21,7 +21,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 # MongoDB credentials
 username = os.getenv("MONGO_USERNAME")
 password = os.getenv("MONGO_PASSWORD")
-escaped_username = quote_plus(username)
+escaped_username = quote_plus(str(username))
 escaped_password = quote_plus(password)
 
 MONGO_URI = f"mongodb+srv://{escaped_username}:{escaped_password}@{os.getenv('MONGO_HOST')}/{os.getenv('MONGO_DB')}?retryWrites=true&w=majority"
